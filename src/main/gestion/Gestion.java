@@ -5,8 +5,8 @@ import main.view.View;
 
 abstract class Gestion {
 
-    protected final View view;
-    protected final Dao dao;
+    protected View view;
+    protected Dao dao;
 
     Gestion(View view, Dao dao){
         this.view = view;
@@ -28,6 +28,7 @@ abstract class Gestion {
                 case 3 -> consultar();
                 case 4 -> borrar();
                 case 5 -> terminarGestion = salir();
+                default -> view.mostrar("Te has equivocado introduce el valor correcto del Menu");
             }
 
         } while (!terminarGestion);
