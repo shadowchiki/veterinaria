@@ -1,24 +1,15 @@
-package main.view;
+package main.view.console;
 
 public class GestionarPropietarioConsoleView extends ConsoleView {
 
     @Override
-    public void mostrar() {
-        System.out.println("----- Menu Propietario -----");
-        System.out.println("1 - Dar de alta Propietario");
-        System.out.println("2 - Mostrar Propietarios");
-        System.out.println("3 - Consultar Propietario");
-        System.out.println("4 - Eliminar Propietario");
-        System.out.println("5 - Salir");
+    public void mostrarMenu() {
+        mostrar("----- Menu Propietario -----");
+        mostrar("1 - Dar de alta Propietario");
+        mostrar("2 - Mostrar Propietarios");
+        mostrar("3 - Consultar Propietario");
+        mostrar("4 - Eliminar Propietario");
+        mostrar("5 - Salir");
     }
 
-    @Override
-    public int pedirInt(String texto) {
-        return console.pedirInt(texto);
-    }
-
-    @Override
-    public String pedirString(String texto) {
-        return console.pedirString(texto);
-    }
 }

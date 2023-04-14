@@ -1,6 +1,6 @@
 package main.view.console;
 
-public class GestonarConsultaConsoleView extends ConsoleView{
+public class GestionarConsultaConsoleView extends ConsoleView{
     @Override
     public void mostrarMenu() {
         mostrar("----- Menu Consulta -----");

@@ -1,72 +1,77 @@
-package main;
+package main.gestion;
+
+import main.database.listas.AnimalDao;
+import main.model.Animal;
+import main.view.console.GestionarAnimalConsoleView;
 
 import java.util.List;
 
-public class GestionAnimal {
+public class GestionAnimal extends Gestion{
 
-    public void gestionar(Propietario propietarioGestionar){
-        List<Animal> animales = propietarioGestionar.getAnimales();
-        boolean gestionAnimalTerminado = false;
-        do {
-            menu.mostrarMenuGestionAnimal();
-            ejecucion = console.pedirInt("Introduce la ejecución que quieres");
-            switch (ejecucion){
-                case 1:
-                    Animal animal = pedirAnimal();
-                    animales.add(animal);
+    public GestionAnimal(){
+        super(new GestionarAnimalConsoleView(), new AnimalDao());
+    }
 
-                    System.out.println("Añadido el Animal");
-                    break;
-                case 2:
-                    System.out.println("2 - Mostrar Animal");
-                    for(int i = 0; i < animales.size(); i++){
-                        System.out.println(animales.get(i));
-                    }
-                    break;
-                case 3:
-                    int idAnimal = console.pedirInt("Introduce el ID del animal");
-                    boolean animalEsEncontrado = false;
-                    Animal animalEncontrado = null;
-                    for(int i = 0; i < animales.size() || !animalEsEncontrado; i++){
-                        if(animales.get(i).getId() == idAnimal){
-                            animalEsEncontrado = true;
-                            animalEncontrado = animales.get(i);
-                        }
-                    }
+    @Override
+    protected void alta() {
+        Animal animal = pedirAnimal();
+        dao.crear(animal);
+        view.mostrar("Añadido el Animal");
+    }
 
-                    if(animalEncontrado != null){
-                        System.out.println(animalEncontrado);
-                    } else {
-                        System.out.println("El animal no existe");
-                    }
+    @Override
+    protected void mostrarTodo() {
+        List<Animal> animales = dao.obtenerTodos();
+        for (Animal animal : animales) {
+            view.mostrar(animal.toString());
+        }
+    }
 
-                    break;
-                case 4:
-                    int idAnimalBorrado = console.pedirInt("Introduce el ID del animal");
-                    boolean animalEsEncontradoBorrado = false;
-                    Animal animalBorrado = null;
+    @Override
+    protected void consultar() {
+        Animal animal = encontrar();
+        if(animal != null){
+            view.mostrar(animal.toString());
+        } else {
+            view.mostrar("El animal no existe");
+        }
+    }
 
-                    for(int i = 0; i < animales.size() || !animalEsEncontradoBorrado; i++){
-                        if(animales.get(i).getId() == idAnimalBorrado){
-                            animalEsEncontradoBorrado = true;
-                            animalBorrado = animales.get(i);
-                        }
-                    }
+    @Override
+    protected void borrar() {
+        Animal animal = encontrar();
+        if(animal != null){
+            dao.borrar(animal);
+        } else {
+            view.mostrar("El animal no existe");
+        }
+    }
 
-                    if(animalBorrado != null){
-                        animales.remove(animalBorrado);
-                    } else {
-                        System.out.println("El animal no existe");
-                    }
-                    break;
-                case 5:
-                    System.out.println("Saliendo de la gestion de Animales");
-                    gestionAnimalTerminado = true;
-                    break;
-            }
+    @Override
+    protected boolean salir() {
+        view.mostrar("Saliendo de la gestion de Animales");
+        return true;
+    }
 
-        } while (!gestionAnimalTerminado);
-        propietarioGestionar.setAnimales(animales);
+    //Pensar si poner esto en la vista
+    private Animal pedirAnimal() {
+
+        String nombre = view.pedirString("Introduce el nombre del animal");
+        int id = view.pedirInt("Introduce el id del animal");
+        int idPropietario = view.pedirInt("Introduce el id del propietario del animal");
+
+        Animal animal = new Animal();
+        animal.setId(id);
+        animal.setNombre(nombre);
+        animal.setIdPropietario(idPropietario);
+
+        return animal;
+    }
+
+    public Animal encontrar() {
+        mostrarTodo();
+        int idPropietario = view.pedirInt("Introduce el ID del Animal");
+        return (Animal) dao.detalle(idPropietario);
     }
 
 }

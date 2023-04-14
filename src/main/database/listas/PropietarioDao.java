@@ -1,26 +1,23 @@
-package main.database;
+package main.database.listas;
 
+import main.database.Dao;
 import main.model.Propietario;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropietarioDao implements Dao<Propietario>{
+public class PropietarioDao implements Dao<Propietario> {
 
-    private final List<Propietario> propietarios;
-
-    public PropietarioDao(){
-        this.propietarios = new ArrayList<>();
-    }
+    private static final List<Propietario> PROPIETARIOS = new ArrayList<>();
 
     @Override
     public void crear(Propietario source) {
-        propietarios.add(source);
+        PROPIETARIOS.add(source);
     }
 
     @Override
     public void borrar(Propietario source) {
-        propietarios.remove(source);
+        PROPIETARIOS.remove(source);
     }
 
     @Override
@@ -28,11 +25,11 @@ public class PropietarioDao implements Dao<Propietario>{
 
         boolean encontrado = false;
         Propietario propietarioConsultar = null;
-        for(int i = 0; i < propietarios.size() || !encontrado; i++){
+        for(int i = 0; i < PROPIETARIOS.size() || !encontrado; i++){
 
-            if(propietarios.get(i).getId() == id){
+            if(PROPIETARIOS.get(i).getId() == id){
                 encontrado = true;
-                propietarioConsultar = propietarios.get(i);
+                propietarioConsultar = PROPIETARIOS.get(i);
             }
 
         }
@@ -42,7 +39,7 @@ public class PropietarioDao implements Dao<Propietario>{
 
     @Override
     public List<Propietario> obtenerTodos() {
-        return propietarios;
+        return PROPIETARIOS;
     }
 
 }
